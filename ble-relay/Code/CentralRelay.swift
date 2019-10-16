@@ -7,23 +7,24 @@
 //
 
 import CoreBluetooth
+import SwiftUI
 
-class Relay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var centralManager: CBCentralManager!
     var remoteDevice: CBPeripheral?
     
-    let serviceUUID = CBUUID(string: "780A")
-    let countCharacteristicUUID = CBUUID(string: "8AA2")
-    
-    @Published var count = 0
-    
+    // Custom service and characteristic UUIDs generated using `$ uuidgen`
+    let serviceUUID = CBUUID(string: "FDB424BE-4458-485A-9F43-1E7048B00ABB")
+    let countCharacteristicUUID = CBUUID(string: "ADBE0057-4EC9-40EC-8C68-DC46C3853678")
+        
     override init() {
         super.init()
         centralManager = CBCentralManager()
         centralManager.delegate = self
     }
 
-    //MARK: - Central manager delegate
+    // MARK: Central manager delegate
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if central.state == .poweredOn {
             centralManager.scanForPeripherals(withServices: [serviceUUID], options: nil)
@@ -40,8 +41,9 @@ class Relay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralD
         peripheral.delegate = self
         peripheral.discoverServices([serviceUUID])
     }
+
+    // MARK: Peripheral delegate
     
-    //MARK: - Peripheral delegate
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if let service = peripheral.services?.first(where: { $0.uuid == serviceUUID }) {
             peripheral.discoverCharacteristics([countCharacteristicUUID], for: service)
@@ -55,15 +57,11 @@ class Relay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralD
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        
-//        if let data = characteristic.value {
-//            let weight: Int = data.withUnsafeBytes{ $0.pointee } >> 8 & 0xFFFFFF
-//            count = weight
-//        }
+        // TODO: React accordingly
     }
     
     // DEBUG: Remove later
     func setToEleven() {
-        count = 11
+        model.count = 11
     }
 }

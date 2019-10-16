@@ -7,16 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D42EC7D5234A72B0005981AC /* PeripheralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */; };
+		D42EC7D7234A858E005981AC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D6234A858E005981AC /* Model.swift */; };
 		D48EBC7E2343B6F1000BF74C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */; };
 		D48EBC802343B6F1000BF74C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */; };
 		D48EBC822343B6F1000BF74C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC812343B6F1000BF74C /* ContentView.swift */; };
 		D48EBC842343B6F2000BF74C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC832343B6F2000BF74C /* Assets.xcassets */; };
 		D48EBC872343B6F2000BF74C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */; };
 		D48EBC8A2343B6F2000BF74C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC882343B6F2000BF74C /* LaunchScreen.storyboard */; };
-		D4BBB3962343FE8D009D4A10 /* Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBB3952343FE8D009D4A10 /* Relay.swift */; };
+		D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralRelay.swift; sourceTree = "<group>"; };
+		D42EC7D6234A858E005981AC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D48EBC7A2343B6F1000BF74C /* ble-relay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ble-relay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -25,7 +29,7 @@
 		D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D48EBC892343B6F2000BF74C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D48EBC8B2343B6F2000BF74C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D4BBB3952343FE8D009D4A10 /* Relay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relay.swift; sourceTree = "<group>"; };
+		D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralRelay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,14 +62,10 @@
 		D48EBC7C2343B6F1000BF74C /* ble-relay */ = {
 			isa = PBXGroup;
 			children = (
-				D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */,
-				D48EBC812343B6F1000BF74C /* ContentView.swift */,
-				D4BBB3952343FE8D009D4A10 /* Relay.swift */,
-				D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */,
-				D48EBC832343B6F2000BF74C /* Assets.xcassets */,
-				D48EBC882343B6F2000BF74C /* LaunchScreen.storyboard */,
-				D48EBC8B2343B6F2000BF74C /* Info.plist */,
+				D4914BBA235697BA009EC65A /* Code */,
+				D4914BBB235697DE009EC65A /* Resources */,
 				D48EBC852343B6F2000BF74C /* Preview Content */,
+				D48EBC8B2343B6F2000BF74C /* Info.plist */,
 			);
 			path = "ble-relay";
 			sourceTree = "<group>";
@@ -76,6 +76,28 @@
 				D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D4914BBA235697BA009EC65A /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */,
+				D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */,
+				D48EBC812343B6F1000BF74C /* ContentView.swift */,
+				D42EC7D6234A858E005981AC /* Model.swift */,
+				D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */,
+				D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		D4914BBB235697DE009EC65A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D48EBC832343B6F2000BF74C /* Assets.xcassets */,
+				D48EBC882343B6F2000BF74C /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,8 +173,10 @@
 			files = (
 				D48EBC7E2343B6F1000BF74C /* AppDelegate.swift in Sources */,
 				D48EBC802343B6F1000BF74C /* SceneDelegate.swift in Sources */,
+				D42EC7D5234A72B0005981AC /* PeripheralRelay.swift in Sources */,
+				D42EC7D7234A858E005981AC /* Model.swift in Sources */,
 				D48EBC822343B6F1000BF74C /* ContentView.swift in Sources */,
-				D4BBB3962343FE8D009D4A10 /* Relay.swift in Sources */,
+				D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
