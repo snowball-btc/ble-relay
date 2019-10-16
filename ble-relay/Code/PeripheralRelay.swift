@@ -8,9 +8,28 @@
 
 import CoreBluetooth
 
-class PeripheralRelay: NSObject {
+class PeripheralRelay: NSObject, CBPeripheralManagerDelegate {
     var peripheralManager: CBPeripheralManager!
     var central: CBCentral?
+    let service = CBMutableService(type: model.serviceUUID, primary: true)
     
-    // TODO: Fill out the rest
+    override init() {
+        super.init()
+        peripheralManager = CBPeripheralManager()
+        peripheralManager.delegate = self
+    }
+    
+    func start() {
+        peripheralManager.add(service)
+        peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey : service.uuid])
+        model.status = "Peripheral controller start"
+    }
+    
+    // MARK: CBPeripheralManagerDelegate
+    
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        debugPrint("peripheralManagerDidUpdateState fired")
+    }
+    
+    // TODO: Stop advertising when switched into central mode
 }

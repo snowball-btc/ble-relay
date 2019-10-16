@@ -12,10 +12,6 @@ import SwiftUI
 class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var centralManager: CBCentralManager!
     var remoteDevice: CBPeripheral?
-    
-    // Custom service and characteristic UUIDs generated using `$ uuidgen`
-    let serviceUUID = CBUUID(string: "FDB424BE-4458-485A-9F43-1E7048B00ABB")
-    let countCharacteristicUUID = CBUUID(string: "ADBE0057-4EC9-40EC-8C68-DC46C3853678")
         
     override init() {
         super.init()
@@ -27,7 +23,7 @@ class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeri
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if central.state == .poweredOn {
-            centralManager.scanForPeripherals(withServices: [serviceUUID], options: nil)
+            centralManager.scanForPeripherals(withServices: [model.serviceUUID], options: nil)
         }
     }
     
@@ -39,19 +35,19 @@ class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeri
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         peripheral.delegate = self
-        peripheral.discoverServices([serviceUUID])
+        peripheral.discoverServices([model.serviceUUID])
     }
 
     // MARK: Peripheral delegate
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        if let service = peripheral.services?.first(where: { $0.uuid == serviceUUID }) {
-            peripheral.discoverCharacteristics([countCharacteristicUUID], for: service)
+        if let service = peripheral.services?.first(where: { $0.uuid == model.serviceUUID }) {
+            peripheral.discoverCharacteristics([model.countCharacteristicUUID], for: service)
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        if let characteristic = service.characteristics?.first(where: { $0.uuid == countCharacteristicUUID}) {
+        if let characteristic = service.characteristics?.first(where: { $0.uuid == model.countCharacteristicUUID}) {
             peripheral.setNotifyValue(true, for: characteristic)
         }
     }
@@ -60,8 +56,9 @@ class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeri
         // TODO: React accordingly
     }
     
-    // DEBUG: Remove later
-    func setToEleven() {
-        model.count = 11
+    // MARK: Remove later
+    
+    func debug() {
+        model.status = "Central controller start"
     }
 }
