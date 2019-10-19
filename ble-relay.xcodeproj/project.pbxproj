@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		006CC38E6A34FD7328540350 /* Pods_ble_relay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6EABFE668375E9742C0C505 /* Pods_ble_relay.framework */; };
 		D4002886235B9A39009E93F0 /* RxCentral.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002885235B9A39009E93F0 /* RxCentral.swift */; };
 		D4002888235BB77C009E93F0 /* RxBluetoothKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */; };
 		D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */; };
@@ -23,11 +22,13 @@
 		D48EBC872343B6F2000BF74C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */; };
 		D48EBC8A2343B6F2000BF74C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC882343B6F2000BF74C /* LaunchScreen.storyboard */; };
 		D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */; };
+		DE64B632ADEC1AA2130335CC /* Pods_ble_relay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		391C7676CF42297A4D53D1CC /* Pods-ble-relay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.release.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.release.xcconfig"; sourceTree = "<group>"; };
-		BE40DD355784F2277403F344 /* Pods-ble-relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.debug.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.debug.xcconfig"; sourceTree = "<group>"; };
+		5E44AE67C9AF70DB48B1D9D2 /* Pods-ble-relay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.release.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.release.xcconfig"; sourceTree = "<group>"; };
+		B5B294D9BEE8E8E072A8D74D /* Pods-ble-relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.debug.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.debug.xcconfig"; sourceTree = "<group>"; };
+		CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ble_relay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4002885235B9A39009E93F0 /* RxCentral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCentral.swift; sourceTree = "<group>"; };
 		D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxBluetoothKitService.swift; sourceTree = "<group>"; };
 		D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+Hashable.swift"; sourceTree = "<group>"; };
@@ -45,7 +46,6 @@
 		D48EBC892343B6F2000BF74C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D48EBC8B2343B6F2000BF74C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralRelay.swift; sourceTree = "<group>"; };
-		D6EABFE668375E9742C0C505 /* Pods_ble_relay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ble_relay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,17 +53,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				006CC38E6A34FD7328540350 /* Pods_ble_relay.framework in Frameworks */,
+				DE64B632ADEC1AA2130335CC /* Pods_ble_relay.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		652BD0C19C1F405418671058 /* Frameworks */ = {
+		A322090A92DF360FFCE85621 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D6EABFE668375E9742C0C505 /* Pods_ble_relay.framework */,
+				CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -71,8 +71,8 @@
 		C310A201FD0081AAC3A96102 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BE40DD355784F2277403F344 /* Pods-ble-relay.debug.xcconfig */,
-				391C7676CF42297A4D53D1CC /* Pods-ble-relay.release.xcconfig */,
+				B5B294D9BEE8E8E072A8D74D /* Pods-ble-relay.debug.xcconfig */,
+				5E44AE67C9AF70DB48B1D9D2 /* Pods-ble-relay.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -83,7 +83,7 @@
 				D48EBC7C2343B6F1000BF74C /* ble-relay */,
 				D48EBC7B2343B6F1000BF74C /* Products */,
 				C310A201FD0081AAC3A96102 /* Pods */,
-				652BD0C19C1F405418671058 /* Frameworks */,
+				A322090A92DF360FFCE85621 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -149,12 +149,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D48EBC8E2343B6F2000BF74C /* Build configuration list for PBXNativeTarget "ble-relay" */;
 			buildPhases = (
-				34D1B944F0308AE4939673AD /* [CP] Check Pods Manifest.lock */,
+				DD48545CFC702520FBC6BD34 /* [CP] Check Pods Manifest.lock */,
 				D48EBC762343B6F1000BF74C /* Sources */,
 				D48EBC772343B6F1000BF74C /* Frameworks */,
 				D48EBC782343B6F1000BF74C /* Resources */,
 				D4B3766B235A093500193DA8 /* Swift Lint */,
-				D6BBE962AEE7B1659E1A7F7B /* [CP] Embed Pods Frameworks */,
+				967C5EEA1F1FB9DDA04CE51C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -212,26 +212,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		34D1B944F0308AE4939673AD /* [CP] Check Pods Manifest.lock */ = {
+		967C5EEA1F1FB9DDA04CE51C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ble-relay-checkManifestLockResult.txt",
+				"${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D4B3766B235A093500193DA8 /* Swift Lint */ = {
@@ -252,21 +247,26 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ -z \"$CI\" ]; then\n    if which swiftlint >/dev/null; then\n        swiftlint\n    else\n        echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n";
 		};
-		D6BBE962AEE7B1659E1A7F7B /* [CP] Embed Pods Frameworks */ = {
+		DD48545CFC702520FBC6BD34 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ble-relay-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -421,7 +421,7 @@
 		};
 		D48EBC8F2343B6F2000BF74C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE40DD355784F2277403F344 /* Pods-ble-relay.debug.xcconfig */;
+			baseConfigurationReference = B5B294D9BEE8E8E072A8D74D /* Pods-ble-relay.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -442,7 +442,7 @@
 		};
 		D48EBC902343B6F2000BF74C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 391C7676CF42297A4D53D1CC /* Pods-ble-relay.release.xcconfig */;
+			baseConfigurationReference = 5E44AE67C9AF70DB48B1D9D2 /* Pods-ble-relay.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

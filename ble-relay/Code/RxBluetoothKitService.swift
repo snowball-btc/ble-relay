@@ -8,7 +8,6 @@
 
 import Foundation
 import RxBluetoothKit
-import RxCocoa
 import RxSwift
 
 // RxBluetoothKitService is a class encapsulating logic for most operations you might want to perform

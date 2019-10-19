@@ -1,5 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-ble-relay/Pods-ble-relay-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/RxBluetoothKit/RxBluetoothKit.framework
-${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework
-${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
