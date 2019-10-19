@@ -7,6 +7,7 @@
 //
 
 import CoreBluetooth
+import RxBluetoothKit
 import SwiftUI
 
 class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -27,10 +28,14 @@ class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeri
         }
     }
     
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         centralManager.stopScan()
-        remoteDevice = peripheral
+
         centralManager.connect(peripheral, options: nil)
+        debugPrint("didDiscover")
+        dump(advertisementData)
+        dump(peripheral.services)
+        print(peripheral.identifier)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -47,13 +52,14 @@ class CentralRelay: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeri
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        if let characteristic = service.characteristics?.first(where: { $0.uuid == model.countCharacteristicUUID}) {
+        if let characteristic = service.characteristics?.first(where: { $0.uuid == model.countCharacteristicUUID }) {
             peripheral.setNotifyValue(true, for: characteristic)
         }
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         // TODO: React accordingly
+        debugPrint("didUpdateValueFor")
     }
     
     // MARK: Remove later

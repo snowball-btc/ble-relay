@@ -20,4 +20,5 @@ final class Model: ObservableObject {
     // Custom service and characteristic UUIDs generated using `$ uuidgen`
     let serviceUUID = CBUUID(string: "FDB424BE-4458-485A-9F43-1E7048B00ABB")
     let countCharacteristicUUID = CBUUID(string: "ADBE0057-4EC9-40EC-8C68-DC46C3853678")
+    let countCharacteristicName = "count"
 }

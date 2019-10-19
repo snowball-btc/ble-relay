@@ -6,6 +6,7 @@
 //  Copyright © 2019 Robert Baltzer. All rights reserved.
 //
 
+import RxBluetoothKit
 import SwiftUI
 
 struct ContentView: View {
@@ -17,14 +18,14 @@ struct ContentView: View {
     }
 }
 
-struct FormView : View {
+struct FormView: View {
     @EnvironmentObject var model: Model
     
     var centralRelay = CentralRelay()
     var peripheralRelay = PeripheralRelay()
     
     var body: some View {
-    
+
         Form {
             Section {
                 HStack {
@@ -38,9 +39,10 @@ struct FormView : View {
                     if self.model.peripheralMode {
                         self.peripheralRelay.start()
                     } else {
-                        self.centralRelay.debug() // TODO: Remove later
+                        self.centralRelay.debug()
                     }
-                }) { Text("Start")}
+                }) { Text("Start")
+                }
             }
             
             Section {
@@ -55,7 +57,6 @@ struct FormView : View {
                     NavigationLink(destination: Log()) {
                         // TODO: put log of BLE events here
                         Text("View Log")
-
                     }
                 }
             }
@@ -63,14 +64,14 @@ struct FormView : View {
     }
 }
 
-struct Log : View {
+struct Log: View {
     var body: some View {
         Text("LOG HERE TBD")
     }
 }
 
 #if DEBUG
-struct ContentView_Previews: PreviewProvider {
+struct ContentViewPreviews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
