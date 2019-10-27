@@ -6,16 +6,16 @@
 //  Copyright © 2019 Robert Baltzer. All rights reserved.
 //
 
+import CoreBluetooth
 import Foundation
 import RxBluetoothKit
 import RxSwift
-import CoreBluetooth
 
 // RxBluetoothKitService is a class encapsulating logic for most operations you might want to perform
 // on a CentralManager object. Here you can see an example usage of such features as scanning for peripherals,
 // discovering services and discovering peripherals.
 
-final class RxBluetoothKitService {
+final class CentralRxBluetoothKitService {
 
     typealias Disconnection = (Peripheral, DisconnectionReason?)
 
@@ -83,7 +83,7 @@ final class RxBluetoothKitService {
 
     // MARK: - Initialization
     init() {
-        let timerQueue = DispatchQueue(label: "com.snowball.rxbluetoothkit.timer")
+        let timerQueue = DispatchQueue(label: "com.snowball.centralrxbluetoothkit.timer")
         scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
     }
 
@@ -99,18 +99,13 @@ final class RxBluetoothKitService {
             $0 == .poweredOn
         }
         .subscribeOn(MainScheduler.instance)
-        .timeout(4.0, scheduler: scheduler)
+        .timeout(DispatchTimeInterval.seconds(4), scheduler: scheduler)
         .flatMap { [weak self] _ -> Observable<ScannedPeripheral> in
-            guard let `self` = self else {
+            guard let self = self else {
                 return Observable.empty()
             }
-            return self.centralManager.scanForPeripherals(withServices: [CBUUID(string: "FE9F"),
-                CBUUID(string: "FE89"),
-//            CBUUID(string: "DABFB00-6E7D-4601-BDA2-BFFAA68956BA"),
-            CBUUID(string: "CBBFE0E1-F7F3-4206-84E0-84CBB3D09DFC")
-            ])
+            return self.centralManager.scanForPeripherals(withServices: [CBUUID(string: "FDB424BE-4458-485A-9F43-1E7048B00ABB")])
         }.subscribe(onNext: { [weak self] scannedPeripheral in
-//                    debugPrint("scannedPeripheral:", scannedPeripheral.advertisementData)
             dump(scannedPeripheral.advertisementData.serviceUUIDs)
                     self?.scanningSubject.onNext(Result.success(scannedPeripheral))
                 }, onError: { [weak self] error in

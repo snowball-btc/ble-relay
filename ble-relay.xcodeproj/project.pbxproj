@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D4002886235B9A39009E93F0 /* RxCentral.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002885235B9A39009E93F0 /* RxCentral.swift */; };
-		D4002888235BB77C009E93F0 /* RxBluetoothKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */; };
+		D4002888235BB77C009E93F0 /* CentralRxBluetoothKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */; };
 		D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */; };
 		D400288C235BBA23009E93F0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288B235BBA23009E93F0 /* Result.swift */; };
 		D400288E235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */; };
@@ -21,6 +21,7 @@
 		D48EBC842343B6F2000BF74C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC832343B6F2000BF74C /* Assets.xcassets */; };
 		D48EBC872343B6F2000BF74C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */; };
 		D48EBC8A2343B6F2000BF74C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC882343B6F2000BF74C /* LaunchScreen.storyboard */; };
+		D49187E323661914004C47D3 /* PeripheralRxBluetoothkitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */; };
 		D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */; };
 		DE64B632ADEC1AA2130335CC /* Pods_ble_relay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */; };
 /* End PBXBuildFile section */
@@ -30,7 +31,7 @@
 		B5B294D9BEE8E8E072A8D74D /* Pods-ble-relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.debug.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.debug.xcconfig"; sourceTree = "<group>"; };
 		CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ble_relay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4002885235B9A39009E93F0 /* RxCentral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCentral.swift; sourceTree = "<group>"; };
-		D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxBluetoothKitService.swift; sourceTree = "<group>"; };
+		D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralRxBluetoothKitService.swift; sourceTree = "<group>"; };
 		D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+Hashable.swift"; sourceTree = "<group>"; };
 		D400288B235BBA23009E93F0 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+CBCharacteristicWriteType.swift"; sourceTree = "<group>"; };
@@ -45,6 +46,7 @@
 		D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D48EBC892343B6F2000BF74C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D48EBC8B2343B6F2000BF74C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralRxBluetoothkitService.swift; sourceTree = "<group>"; };
 		D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralRelay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,11 +131,12 @@
 			children = (
 				D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */,
 				D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */,
+				D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */,
 				D48EBC812343B6F1000BF74C /* ContentView.swift */,
 				D42EC7D6234A858E005981AC /* Model.swift */,
 				D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */,
+				D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */,
 				D400288B235BBA23009E93F0 /* Result.swift */,
-				D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */,
 				D4002885235B9A39009E93F0 /* RxCentral.swift */,
 				D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */,
 				D4002892235BC7C5009E93F0 /* Extensions */,
@@ -294,7 +297,8 @@
 				D48EBC822343B6F1000BF74C /* ContentView.swift in Sources */,
 				D400288C235BBA23009E93F0 /* Result.swift in Sources */,
 				D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */,
-				D4002888235BB77C009E93F0 /* RxBluetoothKitService.swift in Sources */,
+				D49187E323661914004C47D3 /* PeripheralRxBluetoothkitService.swift in Sources */,
+				D4002888235BB77C009E93F0 /* CentralRxBluetoothKitService.swift in Sources */,
 				D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

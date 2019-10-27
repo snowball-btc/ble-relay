@@ -21,10 +21,8 @@ struct ContentView: View {
 struct FormView: View {
     @EnvironmentObject var model: Model
     
-//    var centralRelay = CentralRelay()
-//    var peripheralRelay = PeripheralRelay()
-    
-    var bluetoothService = RxBluetoothKitService()
+    var centralBluetoothService = CentralRxBluetoothKitService()
+    var peripheralBluetoothService = PeripheralRxBluetoothKitService()
     
     var body: some View {
 
@@ -40,9 +38,9 @@ struct FormView: View {
                 Button(action: {
                     
                     if self.model.peripheralMode {
-//                        self.peripheralRelay.start()
+                        self.peripheralBluetoothService.startAdvertising()
                     } else {
-                        self.bluetoothService.startScanning()
+                        self.centralBluetoothService.startScanning()
                     }
                 }) { Text("SStart")
                 }
