@@ -11,7 +11,7 @@
 		D4002888235BB77C009E93F0 /* RxBluetoothKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */; };
 		D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */; };
 		D400288C235BBA23009E93F0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288B235BBA23009E93F0 /* Result.swift */; };
-		D400288E235BBA7E009E93F0 /* Characterist+CBCharacteristicWriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288D235BBA7E009E93F0 /* Characterist+CBCharacteristicWriteType.swift */; };
+		D400288E235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */; };
 		D4002890235BBA8F009E93F0 /* Characteristic+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */; };
 		D42EC7D5234A72B0005981AC /* PeripheralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */; };
 		D42EC7D7234A858E005981AC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D6234A858E005981AC /* Model.swift */; };
@@ -33,7 +33,7 @@
 		D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxBluetoothKitService.swift; sourceTree = "<group>"; };
 		D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+Hashable.swift"; sourceTree = "<group>"; };
 		D400288B235BBA23009E93F0 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		D400288D235BBA7E009E93F0 /* Characterist+CBCharacteristicWriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characterist+CBCharacteristicWriteType.swift"; sourceTree = "<group>"; };
+		D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+CBCharacteristicWriteType.swift"; sourceTree = "<group>"; };
 		D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+Hashable.swift"; sourceTree = "<group>"; };
 		D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralRelay.swift; sourceTree = "<group>"; };
 		D42EC7D6234A858E005981AC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
@@ -75,6 +75,16 @@
 				5E44AE67C9AF70DB48B1D9D2 /* Pods-ble-relay.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D4002892235BC7C5009E93F0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */,
+				D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */,
+				D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D48EBC712343B6F1000BF74C = {
@@ -122,13 +132,11 @@
 				D48EBC812343B6F1000BF74C /* ContentView.swift */,
 				D42EC7D6234A858E005981AC /* Model.swift */,
 				D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */,
-				D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */,
-				D4002885235B9A39009E93F0 /* RxCentral.swift */,
-				D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */,
-				D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */,
 				D400288B235BBA23009E93F0 /* Result.swift */,
-				D400288D235BBA7E009E93F0 /* Characterist+CBCharacteristicWriteType.swift */,
-				D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */,
+				D4002887235BB77C009E93F0 /* RxBluetoothKitService.swift */,
+				D4002885235B9A39009E93F0 /* RxCentral.swift */,
+				D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */,
+				D4002892235BC7C5009E93F0 /* Extensions */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -279,7 +287,7 @@
 				D48EBC7E2343B6F1000BF74C /* AppDelegate.swift in Sources */,
 				D48EBC802343B6F1000BF74C /* SceneDelegate.swift in Sources */,
 				D4002886235B9A39009E93F0 /* RxCentral.swift in Sources */,
-				D400288E235BBA7E009E93F0 /* Characterist+CBCharacteristicWriteType.swift in Sources */,
+				D400288E235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift in Sources */,
 				D4002890235BBA8F009E93F0 /* Characteristic+Hashable.swift in Sources */,
 				D42EC7D5234A72B0005981AC /* PeripheralRelay.swift in Sources */,
 				D42EC7D7234A858E005981AC /* Model.swift in Sources */,

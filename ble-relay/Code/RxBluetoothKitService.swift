@@ -9,6 +9,7 @@
 import Foundation
 import RxBluetoothKit
 import RxSwift
+import CoreBluetooth
 
 // RxBluetoothKitService is a class encapsulating logic for most operations you might want to perform
 // on a CentralManager object. Here you can see an example usage of such features as scanning for peripherals,
@@ -82,7 +83,7 @@ final class RxBluetoothKitService {
 
     // MARK: - Initialization
     init() {
-        let timerQueue = DispatchQueue(label: "com.polidea.rxbluetoothkit.timer")
+        let timerQueue = DispatchQueue(label: "com.snowball.rxbluetoothkit.timer")
         scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
     }
 
@@ -103,10 +104,17 @@ final class RxBluetoothKitService {
             guard let `self` = self else {
                 return Observable.empty()
             }
-            return self.centralManager.scanForPeripherals(withServices: nil)
+            return self.centralManager.scanForPeripherals(withServices: [CBUUID(string: "FE9F"),
+                CBUUID(string: "FE89"),
+//            CBUUID(string: "DABFB00-6E7D-4601-BDA2-BFFAA68956BA"),
+            CBUUID(string: "CBBFE0E1-F7F3-4206-84E0-84CBB3D09DFC")
+            ])
         }.subscribe(onNext: { [weak self] scannedPeripheral in
+//                    debugPrint("scannedPeripheral:", scannedPeripheral.advertisementData)
+            dump(scannedPeripheral.advertisementData.serviceUUIDs)
                     self?.scanningSubject.onNext(Result.success(scannedPeripheral))
                 }, onError: { [weak self] error in
+                    debugPrint("scannedPeripheral error:", error)
                     self?.scanningSubject.onNext(Result.error(error))
                 })
     }
@@ -135,6 +143,8 @@ final class RxBluetoothKitService {
         }
         let observable = isConnected ? connectedObservableCreator(): connectObservableCreator()
         let disposable = observable.subscribe(onNext: { [weak self] services in
+//                    debugPrint("services:", services)
+            
                     self?.discoveredServicesSubject.onNext(Result.success(services))
                 }, onError: { [weak self] error in
                     self?.discoveredServicesSubject.onNext(Result.error(error))
