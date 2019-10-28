@@ -13,9 +13,16 @@ import RxSwift
 
 final class PeripheralRxBluetoothKitService {
  
+    // MARK: - Public outputs
+
+    var advertisementOutput: Observable<Result<StartAdvertisingResult, Error>> {
+        return advertisingSubject.share(replay: 1, scope: .forever).asObservable()
+    }
+    
     // MARK: Private subjects
 
     private let peripheralManager = PeripheralManager(queue: .main)
+    private let advertisingSubject = PublishSubject<Result<StartAdvertisingResult, Error>>()
     private let scheduler: ConcurrentDispatchQueueScheduler
     private let disposeBag = DisposeBag()
     private var advertisingDisposable: Disposable!
@@ -38,8 +45,19 @@ final class PeripheralRxBluetoothKitService {
         .subscribeOn(MainScheduler.instance)
         .flatMap { [weak self] _ -> Observable<StartAdvertisingResult> in
             guard let self = self else { return Observable.empty() }
+            
             return self.peripheralManager.startAdvertising(self.advertisement)
-        }.subscribe(onNext: { print($0) })
+        }.subscribe(onNext: { [weak self] startAdvertisingResult in
+            self?.advertisingSubject.onNext(Result.success(startAdvertisingResult))
+            switch startAdvertisingResult {
+            case .started:
+                model.status = "Advertising as peripheral"
+            case .attachedToExternalAdvertising:
+                model.status = "attachedToExternalAdvertising (error)"
+            }
+        }, onError: { [weak self] error in
+            self?.advertisingSubject.onNext(Result.error(error))
+        })
     }
     
     func stopAdvertising() {

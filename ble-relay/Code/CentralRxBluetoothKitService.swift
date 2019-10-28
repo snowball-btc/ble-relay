@@ -16,7 +16,6 @@ import RxSwift
 // discovering services and discovering peripherals.
 
 final class CentralRxBluetoothKitService {
-
     typealias Disconnection = (Peripheral, DisconnectionReason?)
 
     // MARK: - Public outputs
@@ -24,27 +23,21 @@ final class CentralRxBluetoothKitService {
     var scanningOutput: Observable<Result<ScannedPeripheral, Error>> {
         return scanningSubject.share(replay: 1, scope: .forever).asObservable()
     }
-
     var discoveredServicesOutput: Observable<Result<[Service], Error>> {
         return discoveredServicesSubject.asObservable()
     }
-
     var discoveredCharacteristicsOutput: Observable<Result<[Characteristic], Error>> {
         return discoveredCharacteristicsSubject.asObservable()
     }
-
     var disconnectionReasonOutput: Observable<Result<Disconnection, Error>> {
         return disconnectionSubject.asObservable()
     }
-
     var readValueOutput: Observable<Result<Characteristic, Error>> {
         return readValueSubject.asObservable()
     }
-
     var writeValueOutput: Observable<Result<Characteristic, Error>> {
         return writeValueSubject.asObservable()
     }
-
     var updatedValueAndNotificationOutput: Observable<Result<Characteristic, Error>> {
         return updatedValueAndNotificationSubject.asObservable()
     }
@@ -52,33 +45,21 @@ final class CentralRxBluetoothKitService {
     // MARK: - Private subjects
 
     private let discoveredCharacteristicsSubject = PublishSubject<Result<[Characteristic], Error>>()
-
     private let scanningSubject = PublishSubject<Result<ScannedPeripheral, Error>>()
-
     private let discoveredServicesSubject = PublishSubject<Result<[Service], Error>>()
-
     private let disconnectionSubject = PublishSubject<Result<Disconnection, Error>>()
-
     private let readValueSubject = PublishSubject<Result<Characteristic, Error>>()
-
     private let writeValueSubject = PublishSubject<Result<Characteristic, Error>>()
-
     private let updatedValueAndNotificationSubject = PublishSubject<Result<Characteristic, Error>>()
 
     // MARK: - Private fields
 
     private let centralManager = CentralManager(queue: .main)
-
     private let scheduler: ConcurrentDispatchQueueScheduler
-
     private let disposeBag = DisposeBag()
-
     private var peripheralConnections: [Peripheral: Disposable] = [:]
-
     private var scanningDisposable: Disposable!
-
     private var connectionDisposable: Disposable!
-
     private var notificationDisposables: [Characteristic: Disposable] = [:]
 
     // MARK: - Initialization
@@ -104,14 +85,14 @@ final class CentralRxBluetoothKitService {
             guard let self = self else {
                 return Observable.empty()
             }
-            return self.centralManager.scanForPeripherals(withServices: [CBUUID(string: "FDB424BE-4458-485A-9F43-1E7048B00ABB")])
+            return self.centralManager.scanForPeripherals(withServices: [model.serviceUUID])
         }.subscribe(onNext: { [weak self] scannedPeripheral in
+            self?.scanningSubject.onNext(Result.success(scannedPeripheral))
+            model.status = "Found snowball peripheral"
             dump(scannedPeripheral.advertisementData.serviceUUIDs)
-                    self?.scanningSubject.onNext(Result.success(scannedPeripheral))
-                }, onError: { [weak self] error in
-                    debugPrint("scannedPeripheral error:", error)
-                    self?.scanningSubject.onNext(Result.error(error))
-                })
+        }, onError: { [weak self] error in
+            self?.scanningSubject.onNext(Result.error(error))
+        })
     }
 
     // If you wish to stop scanning for peripherals, you need to dispose the Disposable object, created when
@@ -138,8 +119,6 @@ final class CentralRxBluetoothKitService {
         }
         let observable = isConnected ? connectedObservableCreator(): connectObservableCreator()
         let disposable = observable.subscribe(onNext: { [weak self] services in
-//                    debugPrint("services:", services)
-            
                     self?.discoveredServicesSubject.onNext(Result.success(services))
                 }, onError: { [weak self] error in
                     self?.discoveredServicesSubject.onNext(Result.error(error))

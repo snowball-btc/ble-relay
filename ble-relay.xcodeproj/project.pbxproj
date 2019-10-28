@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D4002886235B9A39009E93F0 /* RxCentral.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002885235B9A39009E93F0 /* RxCentral.swift */; };
 		D4002888235BB77C009E93F0 /* CentralRxBluetoothKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */; };
 		D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */; };
 		D400288C235BBA23009E93F0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288B235BBA23009E93F0 /* Result.swift */; };
 		D400288E235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */; };
 		D4002890235BBA8F009E93F0 /* Characteristic+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */; };
-		D42EC7D5234A72B0005981AC /* PeripheralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */; };
 		D42EC7D7234A858E005981AC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D6234A858E005981AC /* Model.swift */; };
 		D48EBC7E2343B6F1000BF74C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */; };
 		D48EBC802343B6F1000BF74C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */; };
@@ -22,7 +20,6 @@
 		D48EBC872343B6F2000BF74C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC862343B6F2000BF74C /* Preview Assets.xcassets */; };
 		D48EBC8A2343B6F2000BF74C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D48EBC882343B6F2000BF74C /* LaunchScreen.storyboard */; };
 		D49187E323661914004C47D3 /* PeripheralRxBluetoothkitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */; };
-		D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */; };
 		DE64B632ADEC1AA2130335CC /* Pods_ble_relay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,13 +27,11 @@
 		5E44AE67C9AF70DB48B1D9D2 /* Pods-ble-relay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.release.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.release.xcconfig"; sourceTree = "<group>"; };
 		B5B294D9BEE8E8E072A8D74D /* Pods-ble-relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ble-relay.debug.xcconfig"; path = "Target Support Files/Pods-ble-relay/Pods-ble-relay.debug.xcconfig"; sourceTree = "<group>"; };
 		CDBDDDDE44B745AB9A09BB42 /* Pods_ble_relay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ble_relay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4002885235B9A39009E93F0 /* RxCentral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCentral.swift; sourceTree = "<group>"; };
 		D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralRxBluetoothKitService.swift; sourceTree = "<group>"; };
 		D4002889235BB99D009E93F0 /* Peripheral+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+Hashable.swift"; sourceTree = "<group>"; };
 		D400288B235BBA23009E93F0 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+CBCharacteristicWriteType.swift"; sourceTree = "<group>"; };
 		D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+Hashable.swift"; sourceTree = "<group>"; };
-		D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralRelay.swift; sourceTree = "<group>"; };
 		D42EC7D6234A858E005981AC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D48EBC7A2343B6F1000BF74C /* ble-relay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ble-relay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,7 +42,6 @@
 		D48EBC892343B6F2000BF74C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D48EBC8B2343B6F2000BF74C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralRxBluetoothkitService.swift; sourceTree = "<group>"; };
-		D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralRelay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,14 +124,11 @@
 			isa = PBXGroup;
 			children = (
 				D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */,
-				D4BBB3952343FE8D009D4A10 /* CentralRelay.swift */,
 				D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */,
 				D48EBC812343B6F1000BF74C /* ContentView.swift */,
 				D42EC7D6234A858E005981AC /* Model.swift */,
-				D42EC7D4234A72B0005981AC /* PeripheralRelay.swift */,
 				D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */,
 				D400288B235BBA23009E93F0 /* Result.swift */,
-				D4002885235B9A39009E93F0 /* RxCentral.swift */,
 				D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */,
 				D4002892235BC7C5009E93F0 /* Extensions */,
 			);
@@ -289,14 +280,11 @@
 			files = (
 				D48EBC7E2343B6F1000BF74C /* AppDelegate.swift in Sources */,
 				D48EBC802343B6F1000BF74C /* SceneDelegate.swift in Sources */,
-				D4002886235B9A39009E93F0 /* RxCentral.swift in Sources */,
 				D400288E235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift in Sources */,
 				D4002890235BBA8F009E93F0 /* Characteristic+Hashable.swift in Sources */,
-				D42EC7D5234A72B0005981AC /* PeripheralRelay.swift in Sources */,
 				D42EC7D7234A858E005981AC /* Model.swift in Sources */,
 				D48EBC822343B6F1000BF74C /* ContentView.swift in Sources */,
 				D400288C235BBA23009E93F0 /* Result.swift in Sources */,
-				D4BBB3962343FE8D009D4A10 /* CentralRelay.swift in Sources */,
 				D49187E323661914004C47D3 /* PeripheralRxBluetoothkitService.swift in Sources */,
 				D4002888235BB77C009E93F0 /* CentralRxBluetoothKitService.swift in Sources */,
 				D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */,

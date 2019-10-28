@@ -36,13 +36,13 @@ struct FormView: View {
             
             Section {
                 Button(action: {
-                    
                     if self.model.peripheralMode {
                         self.peripheralBluetoothService.startAdvertising()
                     } else {
                         self.centralBluetoothService.startScanning()
                     }
-                }) { Text("SStart")
+                }) {
+                    Text("Start")
                 }
             }
             
