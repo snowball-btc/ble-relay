@@ -26,10 +26,10 @@ final class PeripheralRxBluetoothKitService {
     private let scheduler: ConcurrentDispatchQueueScheduler
     private let disposeBag = DisposeBag()
     private var advertisingDisposable: Disposable!
+    private var addServiceDisposable: Disposable!
     private let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.countCharacteristicName,
                                                 CBAdvertisementDataServiceUUIDsKey: [model.serviceUUID]]
-    private let service = CBMutableService(type: model.serviceUUID, primary: true)
-    
+
     // MARK: Initialization
     
     init() {
@@ -42,13 +42,25 @@ final class PeripheralRxBluetoothKitService {
         .startWith(peripheralManager.state)
         .filter { $0 == .poweredOn }
         .take(1)
-        .subscribeOn(MainScheduler.instance)
-        .flatMap { [weak self] _ -> Observable<StartAdvertisingResult> in
+        .subscribeOn(MainScheduler.instance)  // TODO: Could move to background
+        .flatMap { [weak self] _ -> Observable<CBService> in
             guard let self = self else { return Observable.empty() }
             
-            return self.peripheralManager.startAdvertising(self.advertisement)
-        }.subscribe(onNext: { [weak self] startAdvertisingResult in
-            self?.advertisingSubject.onNext(Result.success(startAdvertisingResult))
+            let service = CBMutableService(type: model.serviceUUID, primary: true)
+            let options: CBCharacteristicProperties = [.write, .read, .notify, .writeWithoutResponse]
+            let permissions: CBAttributePermissions = [.readable, .writeable]
+            let characteristic = CBMutableCharacteristic(type: model.countCharacteristicUUID, properties: options, value: nil, permissions: permissions)
+            service.characteristics = [characteristic]
+            return self.peripheralManager.add(service).asObservable()
+        }
+        .flatMap { [weak self] _ -> Observable<StartAdvertisingResult> in
+        guard let self = self else { return Observable.empty() }
+        
+        return self.peripheralManager.startAdvertising(self.advertisement)
+        }.subscribe(onNext: {  [weak self] startAdvertisingResult in
+            guard let self = self else { return }
+            
+            self.advertisingSubject.onNext(Result.success(startAdvertisingResult))
             switch startAdvertisingResult {
             case .started:
                 model.status = "Advertising as peripheral"
@@ -59,7 +71,8 @@ final class PeripheralRxBluetoothKitService {
             self?.advertisingSubject.onNext(Result.error(error))
         })
     }
-    
+
+    // TODO: Maybe call this??
     func stopAdvertising() {
         advertisingDisposable.dispose()
     }

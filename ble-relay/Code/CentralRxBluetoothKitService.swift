@@ -143,6 +143,7 @@ final class CentralRxBluetoothKitService {
     }
 
     // MARK: - Discovering Characteristics
+    
     func discoverCharacteristics(for service: Service) {
         service.discoverCharacteristics(nil).subscribe(onSuccess: { [unowned self] characteristics in
             self.discoveredCharacteristicsSubject.onNext(Result.success(characteristics))
@@ -152,6 +153,7 @@ final class CentralRxBluetoothKitService {
     }
 
     // MARK: - Reading from and writing to a characteristic
+    
     func readValueFrom(_ characteristic: Characteristic) {
         characteristic.readValue().subscribe(onSuccess: { [unowned self] characteristic in
             self.readValueSubject.onNext(Result.success(characteristic))
