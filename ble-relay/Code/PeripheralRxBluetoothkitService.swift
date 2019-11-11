@@ -23,13 +23,16 @@ final class PeripheralRxBluetoothKitService {
 
     private let peripheralManager = PeripheralManager(queue: .main)
     private let advertisingSubject = PublishSubject<Result<StartAdvertisingResult, Error>>()
+    
+    private let didReadSubject = PublishSubject<CBATTRequest>()
+    
     private let scheduler: ConcurrentDispatchQueueScheduler
     private let disposeBag = DisposeBag()
     private var advertisingDisposable: Disposable!
-    private var addServiceDisposable: Disposable!
-    private let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.countCharacteristicName,
-                                                CBAdvertisementDataServiceUUIDsKey: [model.serviceUUID]]
-
+    
+    private var readDisposable: Disposable!
+    private var writeDisposable: Disposable!
+    
     // MARK: Initialization
     
     init() {
@@ -38,11 +41,14 @@ final class PeripheralRxBluetoothKitService {
     }
     
     func startAdvertising() {
+        startHandlingReads()
+        starthandlingWrites()
+        
         advertisingDisposable = peripheralManager.observeState()
         .startWith(peripheralManager.state)
         .filter { $0 == .poweredOn }
         .take(1)
-        .subscribeOn(MainScheduler.instance)  // TODO: Could move to background
+        .subscribeOn(MainScheduler.instance)
         .flatMap { [weak self] _ -> Observable<CBService> in
             guard let self = self else { return Observable.empty() }
             
@@ -55,9 +61,11 @@ final class PeripheralRxBluetoothKitService {
         }
         .flatMap { [weak self] _ -> Observable<StartAdvertisingResult> in
         guard let self = self else { return Observable.empty() }
-        
-        return self.peripheralManager.startAdvertising(self.advertisement)
-        }.subscribe(onNext: {  [weak self] startAdvertisingResult in
+
+        let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.countCharacteristicName,
+                                            CBAdvertisementDataServiceUUIDsKey: [model.serviceUUID]]
+        return self.peripheralManager.startAdvertising(advertisement)
+        }.subscribe(onNext: { [weak self] startAdvertisingResult in
             guard let self = self else { return }
             
             self.advertisingSubject.onNext(Result.success(startAdvertisingResult))
@@ -72,8 +80,41 @@ final class PeripheralRxBluetoothKitService {
         })
     }
 
-    // TODO: Maybe call this??
+    func startHandlingReads() {
+        readDisposable = peripheralManager.observeDidReceiveRead()
+        .debug()
+        .subscribe(onNext: { [weak self] in
+            guard let self = self,
+                      $0.characteristic.uuid == model.countCharacteristicUUID else { return }
+            
+            if $0.offset > 1 {
+                self.peripheralManager.respond(to: $0, withResult: CBATTError.invalidOffset)
+                return
+            }
+            $0.value = Data(String(model.count).utf8)
+            self.peripheralManager.respond(to: $0, withResult: CBATTError.success)
+        })
+    }
+    
+    // Make sure incoming write is +1 of our model before incrementing our model
+    func starthandlingWrites() {
+        writeDisposable = peripheralManager.observeDidReceiveWrite()
+        .subscribe(onNext: {
+            guard let uuid = $0.first?.characteristic.uuid,
+                  let data = $0.first?.value,
+                  uuid == model.countCharacteristicUUID else { return }
+            
+            let incomingCount = Int(String(decoding: data, as: UTF8.self)) ?? -1
+            if incomingCount - model.count == 1 {
+                model.count = incomingCount + 1
+            }
+        })
+    }
+    
+    // TODO: Maybe call this at some point
     func stopAdvertising() {
         advertisingDisposable.dispose()
+        readDisposable.dispose()
+        writeDisposable.dispose()
     }
 }

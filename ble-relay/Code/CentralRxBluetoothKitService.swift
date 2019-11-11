@@ -76,9 +76,7 @@ final class CentralRxBluetoothKitService {
     func startScanning() {
         scanningDisposable = centralManager.observeState()
         .startWith(centralManager.state)
-        .filter {
-            $0 == .poweredOn
-        }
+        .filter { $0 == .poweredOn }
         .subscribeOn(MainScheduler.instance)
         .timeout(DispatchTimeInterval.seconds(4), scheduler: scheduler)
         .flatMap { [weak self] _ -> Observable<ScannedPeripheral> in
