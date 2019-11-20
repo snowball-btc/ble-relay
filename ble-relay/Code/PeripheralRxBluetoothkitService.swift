@@ -23,13 +23,10 @@ final class PeripheralRxBluetoothKitService {
 
     private let peripheralManager = PeripheralManager(queue: .main)
     private let advertisingSubject = PublishSubject<Result<StartAdvertisingResult, Error>>()
-    
     private let didReadSubject = PublishSubject<CBATTRequest>()
-    
     private let scheduler: ConcurrentDispatchQueueScheduler
     private let disposeBag = DisposeBag()
     private var advertisingDisposable: Disposable!
-    
     private var readDisposable: Disposable!
     private var writeDisposable: Disposable!
     
@@ -96,9 +93,10 @@ final class PeripheralRxBluetoothKitService {
         })
     }
     
-    // Make sure incoming write is +1 of our model before incrementing our model
+    // Make sure incoming write is +1 before incrementing our model
     func starthandlingWrites() {
         writeDisposable = peripheralManager.observeDidReceiveWrite()
+        .debug()
         .subscribe(onNext: {
             guard let uuid = $0.first?.characteristic.uuid,
                   let data = $0.first?.value,

@@ -39,7 +39,7 @@ struct FormView: View {
                     if self.model.peripheralMode {
                         self.peripheralBluetoothService.startAdvertising()
                     } else {
-                        self.centralBluetoothService.startScanning()
+                        self.centralBluetoothService.startRelaying()
                     }
                 }) {
                     Text("Start")

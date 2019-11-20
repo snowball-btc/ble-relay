@@ -11,10 +11,6 @@ import Foundation
 import RxBluetoothKit
 import RxSwift
 
-// RxBluetoothKitService is a class encapsulating logic for most operations you might want to perform
-// on a CentralManager object. Here you can see an example usage of such features as scanning for peripherals,
-// discovering services and discovering peripherals.
-
 final class CentralRxBluetoothKitService {
     typealias Disconnection = (Peripheral, DisconnectionReason?)
 
@@ -63,11 +59,54 @@ final class CentralRxBluetoothKitService {
     private var notificationDisposables: [Characteristic: Disposable] = [:]
 
     // MARK: - Initialization
+    
     init() {
         let timerQueue = DispatchQueue(label: "com.snowball.centralrxbluetoothkit.timer")
         scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
     }
 
+    private var countCharacteristic: Characteristic!
+    
+    func startRelaying() {
+        // TODO: Fix triangle of death
+        _ = self.scanningOutput.subscribe(onNext: { result in
+            switch result {
+            case .success(let perip):
+                _ = self.discoveredServicesOutput.subscribe(onNext: { result in
+                    switch result {
+                    case .success(let services):
+                        for service in services where service.uuid == model.serviceUUID {
+                            print("service", service.uuid)
+                                _ = self.discoveredCharacteristicsOutput.subscribe(onNext: { result in
+                                    switch result {
+                                    case .success(let characteristics):
+                                        for characteristic in characteristics where characteristic.uuid == model.countCharacteristicUUID {
+                                            self.countCharacteristic = characteristic
+                                            print("characteristic", characteristic.uuid)
+                                        }
+                                    case .error(let err):
+                                        print("error", err)
+                                    }
+                                    print("characteristic", result)
+                                })
+                                self.discoverCharacteristics(for: service)
+                        }
+                    case .error(let err):
+                    print("error", err)
+                    }
+                })
+                self.discoverServices(for: perip.peripheral)
+                print("perip", perip)
+            case .error(let err):
+                print("err", err)
+            }
+            print("result", result)
+            print("result typeof", type(of: result))
+        }).disposed(by: disposeBag)
+
+        startScanning()
+    }
+    
     // MARK: - Scanning for peripherals
 
     // You start from observing state of your CentralManager object. Within RxBluetoothKit v.5.0, it is crucial
@@ -87,7 +126,7 @@ final class CentralRxBluetoothKitService {
         }.subscribe(onNext: { [weak self] scannedPeripheral in
             self?.scanningSubject.onNext(Result.success(scannedPeripheral))
             model.status = "Found snowball peripheral"
-            dump(scannedPeripheral.advertisementData.serviceUUIDs)
+//            dump(scannedPeripheral.advertisementData.serviceUUIDs)
         }, onError: { [weak self] error in
             self?.scanningSubject.onNext(Result.error(error))
         })
