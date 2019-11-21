@@ -68,42 +68,50 @@ final class CentralRxBluetoothKitService {
     private var countCharacteristic: Characteristic!
     
     func startRelaying() {
-        // TODO: Fix triangle of death
-        _ = self.scanningOutput.subscribe(onNext: { result in
-            switch result {
-            case .success(let perip):
-                _ = self.discoveredServicesOutput.subscribe(onNext: { result in
-                    switch result {
-                    case .success(let services):
-                        for service in services where service.uuid == model.serviceUUID {
-                            print("service", service.uuid)
-                                _ = self.discoveredCharacteristicsOutput.subscribe(onNext: { result in
-                                    switch result {
-                                    case .success(let characteristics):
-                                        for characteristic in characteristics where characteristic.uuid == model.countCharacteristicUUID {
-                                            self.countCharacteristic = characteristic
-                                            print("characteristic", characteristic.uuid)
-                                        }
-                                    case .error(let err):
-                                        print("error", err)
-                                    }
-                                    print("characteristic", result)
-                                })
-                                self.discoverCharacteristics(for: service)
-                        }
-                    case .error(let err):
-                    print("error", err)
-                    }
-                })
-                self.discoverServices(for: perip.peripheral)
-                print("perip", perip)
-            case .error(let err):
-                print("err", err)
+        let snowballPeripheral = scanningOutput
+            .take(1)
+            .map { result in
+                switch result {
+                case .success(let perip):
+                    self.discoverServices(for: perip.peripheral)
+                case .error(let err):
+                    print(err)
+                }
             }
-            print("result", result)
-            print("result typeof", type(of: result))
-        }).disposed(by: disposeBag)
-
+        
+        let snowballService = discoveredServicesOutput
+            .take(1)
+            .map { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let services):
+                    for service in services where service.uuid == model.serviceUUID {
+                        self.discoverCharacteristics(for: service)
+                    }
+                case .error(let err):
+                    print(err)
+                }
+            }
+            
+        let snowballCharateristic = discoveredCharacteristicsOutput
+            .take(1)
+            .map { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let characteristics):
+                    for characteristic in characteristics where characteristic.uuid == model.countCharacteristicUUID {
+                        self.countCharacteristic = characteristic
+                    }
+                case .error(let err):
+                    print(err)
+                }
+            }
+        
+        _ = Observable.zip(snowballPeripheral, snowballService, snowballCharateristic) { $2 }
+            .subscribe(onNext: {
+            print("characteristic", $0)
+        })
+        
         startScanning()
     }
     
