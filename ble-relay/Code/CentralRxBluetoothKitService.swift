@@ -12,6 +12,16 @@ import RxBluetoothKit
 import RxSwift
 
 final class CentralRxBluetoothKitService {
+    enum CentralState {
+        case idle                   // Do nothing
+        case incrementCounter       // Central increments count
+        case writeCounter           // Central writes count to peripheral
+        case waitForPeripheral      // Central allows time to pass for peripheral to rx and inc count
+        case readCounter            // Central reads count from peripheral
+        case verifyCounter          // Cnetral verifies the peripheral inremented +1
+        case error                  // Something went wrong
+    }
+    
     typealias Disconnection = (Peripheral, DisconnectionReason?)
 
     // MARK: - Public outputs
@@ -51,12 +61,15 @@ final class CentralRxBluetoothKitService {
     // MARK: - Private fields
 
     private let centralManager = CentralManager(queue: .main)
+    private var centralState: CentralState = .idle
     private let scheduler: ConcurrentDispatchQueueScheduler
     private let disposeBag = DisposeBag()
     private var peripheralConnections: [Peripheral: Disposable] = [:]
     private var scanningDisposable: Disposable!
     private var connectionDisposable: Disposable!
     private var notificationDisposables: [Characteristic: Disposable] = [:]
+    private var countCharacteristic: Characteristic!
+    private var time: Int = 0
 
     // MARK: - Initialization
     
@@ -64,16 +77,17 @@ final class CentralRxBluetoothKitService {
         let timerQueue = DispatchQueue(label: "com.snowball.centralrxbluetoothkit.timer")
         scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
     }
-
-    private var countCharacteristic: Characteristic!
     
     func startRelaying() {
+        model.status = "Searching for snowball peripherals"
+        
         let snowballPeripheral = scanningOutput
             .take(1)
             .map { result in
                 switch result {
                 case .success(let perip):
                     self.discoverServices(for: perip.peripheral)
+                    model.status = "Found snowball peripheral"
                 case .error(let err):
                     print(err)
                 }
@@ -87,13 +101,14 @@ final class CentralRxBluetoothKitService {
                 case .success(let services):
                     for service in services where service.uuid == model.serviceUUID {
                         self.discoverCharacteristics(for: service)
+                        model.status = "Found snowball service"
                     }
                 case .error(let err):
                     print(err)
                 }
             }
             
-        let snowballCharateristic = discoveredCharacteristicsOutput
+        let snowballCharacteristic = discoveredCharacteristicsOutput
             .take(1)
             .map { [weak self] result in
                 guard let self = self else { return }
@@ -101,20 +116,60 @@ final class CentralRxBluetoothKitService {
                 case .success(let characteristics):
                     for characteristic in characteristics where characteristic.uuid == model.countCharacteristicUUID {
                         self.countCharacteristic = characteristic
+                        model.status = "Found snowball characteristic"
                     }
                 case .error(let err):
                     print(err)
                 }
             }
         
-        _ = Observable.zip(snowballPeripheral, snowballService, snowballCharateristic) { $2 }
-            .subscribe(onNext: {
-            print("characteristic", $0)
+        _ = Observable.zip(snowballPeripheral, snowballService, snowballCharacteristic) { _, _, _ in }
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+
+                model.status = "\(self.countCharacteristic.uuid)"
+                self.stopScanning()
+                self.centralState = .incrementCounter
+                self.startReadWrites()
         })
         
         startScanning()
     }
     
+    func startReadWrites() {
+        _ = Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.stateMachine()
+            })
+    }
+        
+    func stateMachine() {
+        time += 1
+        
+        switch centralState {
+        case .idle:
+            print("idle")
+        case .incrementCounter:
+            model.count += 1
+            centralState = .writeCounter
+        case .writeCounter:
+            print("TODO: Write model.count to periperal")
+            time = 0
+            centralState = .waitForPeripheral
+        case .waitForPeripheral:
+            if time > 1 {
+                centralState = .readCounter
+            }
+        case .readCounter:
+            print("TODO: Read model.count to periperal")
+            centralState = .verifyCounter
+        case .verifyCounter:
+            print("TODO: Verify count")
+            centralState = .incrementCounter
+        case .error:
+            print("TODO: Handle errors")
+        }
+    }
     // MARK: - Scanning for peripherals
 
     // You start from observing state of your CentralManager object. Within RxBluetoothKit v.5.0, it is crucial
@@ -125,7 +180,6 @@ final class CentralRxBluetoothKitService {
         .startWith(centralManager.state)
         .filter { $0 == .poweredOn }
         .subscribeOn(MainScheduler.instance)
-        .timeout(DispatchTimeInterval.seconds(4), scheduler: scheduler)
         .flatMap { [weak self] _ -> Observable<ScannedPeripheral> in
             guard let self = self else {
                 return Observable.empty()
@@ -133,8 +187,6 @@ final class CentralRxBluetoothKitService {
             return self.centralManager.scanForPeripherals(withServices: [model.serviceUUID])
         }.subscribe(onNext: { [weak self] scannedPeripheral in
             self?.scanningSubject.onNext(Result.success(scannedPeripheral))
-            model.status = "Found snowball peripheral"
-//            dump(scannedPeripheral.advertisementData.serviceUUIDs)
         }, onError: { [weak self] error in
             self?.scanningSubject.onNext(Result.error(error))
         })
