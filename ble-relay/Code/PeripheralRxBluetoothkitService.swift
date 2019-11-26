@@ -12,7 +12,7 @@ import RxBluetoothKit
 import RxSwift
 
 final class PeripheralRxBluetoothKitService {
- 
+    
     // MARK: - Public outputs
 
     var advertisementOutput: Observable<Result<StartAdvertisingResult, Error>> {
@@ -79,7 +79,6 @@ final class PeripheralRxBluetoothKitService {
 
     func startHandlingReads() {
         readDisposable = peripheralManager.observeDidReceiveRead()
-        .debug()
         .subscribe(onNext: { [weak self] in
             guard let self = self,
                       $0.characteristic.uuid == model.countCharacteristicUUID else { return }

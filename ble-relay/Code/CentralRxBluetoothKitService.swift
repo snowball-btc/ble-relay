@@ -18,7 +18,7 @@ final class CentralRxBluetoothKitService {
         case writeCounter           // Central writes count to peripheral
         case waitForPeripheral      // Central allows time to pass for peripheral to rx and inc count
         case readCounter            // Central reads count from peripheral
-        case verifyCounter          // Cnetral verifies the peripheral inremented +1
+        case awaitReadComplete      // Wait for the read to complete
         case error                  // Something went wrong
     }
     
@@ -139,11 +139,12 @@ final class CentralRxBluetoothKitService {
     func startReadWrites() {
         _ = Observable<Int>.interval(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                self?.stateMachine()
+                // Churn state machine every second
+                self?.centralStateMachine()
             })
     }
         
-    func stateMachine() {
+    func centralStateMachine() {
         time += 1
         
         switch centralState {
@@ -153,7 +154,8 @@ final class CentralRxBluetoothKitService {
             model.count += 1
             centralState = .writeCounter
         case .writeCounter:
-            print("TODO: Write model.count to periperal")
+            writeValueTo(characteristic: countCharacteristic,
+                         data: Data(String(model.count).utf8))
             time = 0
             centralState = .waitForPeripheral
         case .waitForPeripheral:
@@ -161,11 +163,30 @@ final class CentralRxBluetoothKitService {
                 centralState = .readCounter
             }
         case .readCounter:
-            print("TODO: Read model.count to periperal")
-            centralState = .verifyCounter
-        case .verifyCounter:
-            print("TODO: Verify count")
-            centralState = .incrementCounter
+            readValueFrom(countCharacteristic)
+            centralState = .awaitReadComplete
+                _ = readValueOutput
+                .take(1)
+                .map { [weak self] result in
+                    guard let self = self else { return }
+                    
+                    switch result {
+                    case .success(let characteristic):
+                        guard let data = characteristic.value,
+                              let value = Int(String(decoding: data, as: UTF8.self)) else { return }
+                        
+                        if value - model.count == 1 {
+                            // Periperhal incremented by one, now it is Central's turn
+                            self.centralState = .incrementCounter
+                            model.count = value
+                        }
+                    case .error(let err):
+                        print(err)
+                    }
+                }
+        case .awaitReadComplete:
+            // Do nothing
+            print(".awaitReadComplete") // TODO: Does swift have a NOP()?
         case .error:
             print("TODO: Handle errors")
         }
