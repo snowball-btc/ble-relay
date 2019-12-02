@@ -128,10 +128,11 @@ final class CentralRxBluetoothKitService {
                 guard let self = self else { return }
 
                 model.status = "\(self.countCharacteristic.uuid)"
+                self.startReadObservable()
                 self.stopScanning()
                 self.centralState = .incrementCounter
                 self.startReadWrites()
-        })
+        }).disposed(by: disposeBag)
         
         startScanning()
     }
@@ -141,7 +142,27 @@ final class CentralRxBluetoothKitService {
             .subscribe(onNext: { [weak self] _ in
                 // Churn state machine every second
                 self?.centralStateMachine()
-            })
+            }).disposed(by: disposeBag)
+    }
+    
+    func startReadObservable() {
+        _ = readValueOutput.subscribe(onNext: { [weak self] result in
+            guard let self = self else { return }
+        
+            switch result {
+            case .success(let characteristic):
+                guard let data = characteristic.value,
+                      let value = Int(String(decoding: data, as: UTF8.self)) else { return }
+                
+                if value - model.count == 1 {
+                    // Periperhal incremented by one, now it is Central's turn
+                    self.centralState = .incrementCounter
+                    model.count = value
+                }
+            case .error(let err):
+                print(err)
+            }
+        }).disposed(by: disposeBag)
     }
         
     func centralStateMachine() {
@@ -149,7 +170,7 @@ final class CentralRxBluetoothKitService {
         
         switch centralState {
         case .idle:
-            print("idle")
+            break
         case .incrementCounter:
             model.count += 1
             centralState = .writeCounter
@@ -165,30 +186,11 @@ final class CentralRxBluetoothKitService {
         case .readCounter:
             readValueFrom(countCharacteristic)
             centralState = .awaitReadComplete
-                _ = readValueOutput
-                .take(1)
-                .map { [weak self] result in
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let characteristic):
-                        guard let data = characteristic.value,
-                              let value = Int(String(decoding: data, as: UTF8.self)) else { return }
-                        
-                        if value - model.count == 1 {
-                            // Periperhal incremented by one, now it is Central's turn
-                            self.centralState = .incrementCounter
-                            model.count = value
-                        }
-                    case .error(let err):
-                        print(err)
-                    }
-                }
         case .awaitReadComplete:
             // Do nothing
-            print(".awaitReadComplete") // TODO: Does swift have a NOP()?
+            break
         case .error:
-            print("TODO: Handle errors")
+            print("error")
         }
     }
     // MARK: - Scanning for peripherals

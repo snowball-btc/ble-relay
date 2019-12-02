@@ -100,7 +100,7 @@ final class PeripheralRxBluetoothKitService {
             guard let uuid = $0.first?.characteristic.uuid,
                   let data = $0.first?.value,
                   uuid == model.countCharacteristicUUID else { return }
-            
+
             let incomingCount = Int(String(decoding: data, as: UTF8.self)) ?? -1
             if incomingCount - model.count == 1 {
                 model.count = incomingCount + 1
