@@ -51,17 +51,17 @@ final class PeripheralRxBluetoothKitService {
             
             let service = CBMutableService(type: model.serviceUUID, primary: true)
             let options: CBCharacteristicProperties = [.write, .read, .notify, .writeWithoutResponse]
-            let permissions: CBAttributePermissions = [.readable, .writeable]
+            let permissions: CBAttributePermissions = [.readEncryptionRequired, .writeEncryptionRequired]
             let characteristic = CBMutableCharacteristic(type: model.countCharacteristicUUID, properties: options, value: nil, permissions: permissions)
             service.characteristics = [characteristic]
             return self.peripheralManager.add(service).asObservable()
         }
         .flatMap { [weak self] _ -> Observable<StartAdvertisingResult> in
-        guard let self = self else { return Observable.empty() }
+            guard let self = self else { return Observable.empty() }
 
-        let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.countCharacteristicName,
-                                            CBAdvertisementDataServiceUUIDsKey: [model.serviceUUID]]
-        return self.peripheralManager.startAdvertising(advertisement)
+            let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.countCharacteristicName,
+                                                CBAdvertisementDataServiceUUIDsKey: [model.serviceUUID]]
+            return self.peripheralManager.startAdvertising(advertisement)
         }.subscribe(onNext: { [weak self] startAdvertisingResult in
             guard let self = self else { return }
             
