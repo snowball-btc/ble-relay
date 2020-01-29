@@ -7,6 +7,7 @@ disabled_rules:
   - multiple_closures_with_trailing_closure
   - type_body_length
   - cyclomatic_complexity
+  - force_unwrapping
 opt_in_rules:
   - no_fallthrough_only
   - closure_end_indentation

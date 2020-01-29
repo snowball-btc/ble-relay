@@ -13,6 +13,7 @@
 		D400288E235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */; };
 		D4002890235BBA8F009E93F0 /* Characteristic+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */; };
 		D42EC7D7234A858E005981AC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42EC7D6234A858E005981AC /* Model.swift */; };
+		D47BDB0223E0CB7B006FDAB6 /* EncryptDecrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47BDB0123E0CB7B006FDAB6 /* EncryptDecrypt.swift */; };
 		D48EBC7E2343B6F1000BF74C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */; };
 		D48EBC802343B6F1000BF74C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */; };
 		D48EBC822343B6F1000BF74C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48EBC812343B6F1000BF74C /* ContentView.swift */; };
@@ -33,6 +34,7 @@
 		D400288D235BBA7E009E93F0 /* Characteristic+CBCharacteristicWriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+CBCharacteristicWriteType.swift"; sourceTree = "<group>"; };
 		D400288F235BBA8F009E93F0 /* Characteristic+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Characteristic+Hashable.swift"; sourceTree = "<group>"; };
 		D42EC7D6234A858E005981AC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		D47BDB0123E0CB7B006FDAB6 /* EncryptDecrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptDecrypt.swift; sourceTree = "<group>"; };
 		D48EBC7A2343B6F1000BF74C /* ble-relay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ble-relay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D48EBC7F2343B6F1000BF74C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				D48EBC7D2343B6F1000BF74C /* AppDelegate.swift */,
 				D4002887235BB77C009E93F0 /* CentralRxBluetoothKitService.swift */,
 				D48EBC812343B6F1000BF74C /* ContentView.swift */,
+				D47BDB0123E0CB7B006FDAB6 /* EncryptDecrypt.swift */,
 				D42EC7D6234A858E005981AC /* Model.swift */,
 				D49187E223661914004C47D3 /* PeripheralRxBluetoothkitService.swift */,
 				D400288B235BBA23009E93F0 /* Result.swift */,
@@ -287,6 +290,7 @@
 				D400288C235BBA23009E93F0 /* Result.swift in Sources */,
 				D49187E323661914004C47D3 /* PeripheralRxBluetoothkitService.swift in Sources */,
 				D4002888235BB77C009E93F0 /* CentralRxBluetoothKitService.swift in Sources */,
+				D47BDB0223E0CB7B006FDAB6 /* EncryptDecrypt.swift in Sources */,
 				D400288A235BB99D009E93F0 /* Peripheral+Hashable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

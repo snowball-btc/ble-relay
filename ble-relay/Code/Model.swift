@@ -21,6 +21,8 @@ final class Model: ObservableObject {
     let serviceUUID = CBUUID(string: "FDB424BE-4458-485A-9F43-1E7048B00ABB")
     let countCharacteristicUUID = CBUUID(string: "ADBE0057-4EC9-40EC-8C68-DC46C3853678")
     let countCharacteristicName = "count"
-
+    var privateKey: SecKey? = nil
+    var publicKey: SecKey? = nil
+    
     let goodRSSISignalStrength = -60    // Good or better signal strength is -60 dBm or higher
 }
