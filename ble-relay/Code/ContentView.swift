@@ -30,7 +30,7 @@ struct FormView: View {
             Section {
                 HStack {
                     Text("Value:")
-                    Text("\(model.count)")
+                    Text("\(model.countValue)")
                 }
             }
             

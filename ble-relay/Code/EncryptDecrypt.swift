@@ -8,7 +8,9 @@
 
 import Foundation
 
-struct EncryptDecrypt {
+class EncryptDecrypt {
+    static let shared = EncryptDecrypt()
+    
     func createKeys() {
         let tag = "com.snowball-btc.ble-relay".data(using: .utf8)!
         let attributes: [String: Any] =
@@ -28,8 +30,14 @@ struct EncryptDecrypt {
             guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
                 throw error!.takeRetainedValue() as Error
             }
-            model.privateKey = privateKey
-            model.publicKey = publicKey
+            if let cfdata = SecKeyCopyExternalRepresentation(privateKey, &error) {
+                let data: Data = cfdata as Data
+                model.privKey = data.base64EncodedString()
+            }
+            if let cfdata = SecKeyCopyExternalRepresentation(publicKey, &error) {
+                let data: Data = cfdata as Data
+                model.pubKey = data.base64EncodedString()
+            }
         } catch {
             print(error)
         }

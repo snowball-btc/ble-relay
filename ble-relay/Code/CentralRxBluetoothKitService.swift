@@ -12,8 +12,11 @@ import RxBluetoothKit
 import RxSwift
 
 final class CentralRxBluetoothKitService {
-    enum CentralState {
+    enum State {
         case idle                   // Do nothing
+        case createRSAKeys
+        case sendCentralPublicKey
+        case awaitPeripheralPublicKey
         case incrementCounter       // Central increments count
         case writeCounter           // Central writes count to peripheral
         case waitForPeripheral      // Central allows time to pass for peripheral to rx and inc count
@@ -61,7 +64,7 @@ final class CentralRxBluetoothKitService {
     // MARK: - Private fields
 
     private let centralManager = CentralManager(queue: .main)
-    private var centralState: CentralState = .idle
+    private var state: State = .idle
     private let scheduler: ConcurrentDispatchQueueScheduler
     private let disposeBag = DisposeBag()
     private var peripheralConnections: [Peripheral: Disposable] = [:]
@@ -114,9 +117,9 @@ final class CentralRxBluetoothKitService {
                 guard let self = self else { return }
                 switch result {
                 case .success(let characteristics):
-                    for characteristic in characteristics where characteristic.uuid == model.countCharacteristicUUID {
+                    for characteristic in characteristics where characteristic.uuid == model.count.UUID {
                         self.countCharacteristic = characteristic
-                        model.status = "Found snowball characteristic"
+                        model.status = "Found count characteristic"
                     }
                 case .error(let err):
                     print(err)
@@ -130,7 +133,7 @@ final class CentralRxBluetoothKitService {
                 model.status = "\(self.countCharacteristic.uuid)"
                 self.startReadObservable()
                 self.stopScanning()
-                self.centralState = .incrementCounter
+                self.state = .incrementCounter
                 self.startReadWrites()
         }).disposed(by: disposeBag)
         
@@ -154,10 +157,10 @@ final class CentralRxBluetoothKitService {
                 guard let data = characteristic.value,
                       let value = Int(String(decoding: data, as: UTF8.self)) else { return }
                 
-                if value - model.count == 1 {
+                if value - model.countValue == 1 {
                     // Periperhal incremented by one, now it is Central's turn
-                    self.centralState = .incrementCounter
-                    model.count = value
+                    self.state = .incrementCounter
+                    model.countValue = value
                 }
             case .error(let err):
                 print(err)
@@ -168,24 +171,33 @@ final class CentralRxBluetoothKitService {
     func centralStateMachine() {
         time += 1
         
-        switch centralState {
+        switch state {
         case .idle:
             break
+        case .createRSAKeys:
+            EncryptDecrypt.shared.createKeys()
+            state = .sendCentralPublicKey
+        case .sendCentralPublicKey:
+            writeValueTo(characteristic: countCharacteristic,
+                         data: Data(String(model.countValue).utf8))
+            state = .awaitPeripheralPublicKey
+        case .awaitPeripheralPublicKey:
+            break
         case .incrementCounter:
-            model.count += 1
-            centralState = .writeCounter
+            model.countValue += 1
+            state = .writeCounter
         case .writeCounter:
             writeValueTo(characteristic: countCharacteristic,
-                         data: Data(String(model.count).utf8))
+                         data: Data(String(model.countValue).utf8))
             time = 0
-            centralState = .waitForPeripheral
+            state = .waitForPeripheral
         case .waitForPeripheral:
             if time > 1 {
-                centralState = .readCounter
+                state = .readCounter
             }
         case .readCounter:
             readValueFrom(countCharacteristic)
-            centralState = .awaitReadComplete
+            state = .awaitReadComplete
         case .awaitReadComplete:
             // Do nothing
             break

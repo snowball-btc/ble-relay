@@ -52,14 +52,14 @@ final class PeripheralRxBluetoothKitService {
             let service = CBMutableService(type: model.serviceUUID, primary: true)
             let options: CBCharacteristicProperties = [.write, .read, .notify, .writeWithoutResponse]
             let permissions: CBAttributePermissions = [.readEncryptionRequired, .writeEncryptionRequired]
-            let characteristic = CBMutableCharacteristic(type: model.countCharacteristicUUID, properties: options, value: nil, permissions: permissions)
+            let characteristic = CBMutableCharacteristic(type: model.count.UUID, properties: options, value: nil, permissions: permissions)
             service.characteristics = [characteristic]
             return self.peripheralManager.add(service).asObservable()
         }
         .flatMap { [weak self] _ -> Observable<StartAdvertisingResult> in
             guard let self = self else { return Observable.empty() }
 
-            let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.countCharacteristicName,
+            let advertisement: [String: Any] = [CBAdvertisementDataLocalNameKey: model.count.name,
                                                 CBAdvertisementDataServiceUUIDsKey: [model.serviceUUID]]
             return self.peripheralManager.startAdvertising(advertisement)
         }.subscribe(onNext: { [weak self] startAdvertisingResult in
@@ -81,13 +81,13 @@ final class PeripheralRxBluetoothKitService {
         readDisposable = peripheralManager.observeDidReceiveRead()
         .subscribe(onNext: { [weak self] in
             guard let self = self,
-                      $0.characteristic.uuid == model.countCharacteristicUUID else { return }
+                $0.characteristic.uuid == model.count.UUID else { return }
             
             if $0.offset > 1 {
                 self.peripheralManager.respond(to: $0, withResult: CBATTError.invalidOffset)
                 return
             }
-            $0.value = Data(String(model.count).utf8)
+            $0.value = Data(String(model.countValue).utf8)
             self.peripheralManager.respond(to: $0, withResult: CBATTError.success)
         })
     }
@@ -99,11 +99,11 @@ final class PeripheralRxBluetoothKitService {
         .subscribe(onNext: {
             guard let uuid = $0.first?.characteristic.uuid,
                   let data = $0.first?.value,
-                  uuid == model.countCharacteristicUUID else { return }
+                uuid == model.count.UUID else { return }
 
             let incomingCount = Int(String(decoding: data, as: UTF8.self)) ?? -1
-            if incomingCount - model.count == 1 {
-                model.count = incomingCount + 1
+            if incomingCount - model.countValue == 1 {
+                model.countValue = incomingCount + 1
             }
         })
     }
