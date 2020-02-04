@@ -13,16 +13,16 @@ import RxSwift
 
 final class CentralRxBluetoothKitService {
     enum State {
-        case idle                   // Do nothing
+        case idle                       // Do nothing
         case createRSAKeys
         case sendCentralPublicKey
         case awaitPeripheralPublicKey
-        case incrementCounter       // Central increments count
-        case writeCounter           // Central writes count to peripheral
-        case waitForPeripheral      // Central allows time to pass for peripheral to rx and inc count
-        case readCounter            // Central reads count from peripheral
-        case awaitReadComplete      // Wait for the read to complete
-        case error                  // Something went wrong
+        case incrementCounter           // Central increments count
+        case writeCounter               // Central writes count to peripheral
+        case waitForPeripheral          // Central allows time to pass for peripheral to rx and inc count
+        case readCounter                // Central reads count from peripheral
+        case awaitReadComplete          // Wait for the read to complete
+        case error                      // Something went wrong
     }
     
     typealias Disconnection = (Peripheral, DisconnectionReason?)
@@ -72,6 +72,8 @@ final class CentralRxBluetoothKitService {
     private var connectionDisposable: Disposable!
     private var notificationDisposables: [Characteristic: Disposable] = [:]
     private var countCharacteristic: Characteristic!
+    private var centralPubKeyCharacteristic: Characteristic!
+    private var peripheralPubKeyCharacteristic: Characteristic!
     private var time: Int = 0
 
     // MARK: - Initialization
@@ -117,10 +119,21 @@ final class CentralRxBluetoothKitService {
                 guard let self = self else { return }
                 switch result {
                 case .success(let characteristics):
-                    for characteristic in characteristics where characteristic.uuid == model.count.UUID {
-                        self.countCharacteristic = characteristic
-                        model.status = "Found count characteristic"
+                    for characteristic in characteristics {
+                        if characteristic.uuid == model.count.UUID {
+                            self.countCharacteristic = characteristic
+                            model.status = "Found count characteristic"
+                            print(model.status)
+                        } else if characteristic.uuid == model.peripheral.UUID {
+                            self.peripheralPubKeyCharacteristic = characteristic
+                            model.status = "Found peripheralPubKeyCharacteristic characteristic"
+                        } else if characteristic.uuid == model.central.UUID {
+                            self.centralPubKeyCharacteristic = characteristic
+                            model.status = "Found centralPubKeyCharacteristic characteristic"
+                        }
+                        print(model.status)
                     }
+
                 case .error(let err):
                     print(err)
                 }
