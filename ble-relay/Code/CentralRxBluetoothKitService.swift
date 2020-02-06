@@ -15,8 +15,8 @@ final class CentralRxBluetoothKitService {
     enum State {
         case idle                       // Do nothing
         case createRSAKeys
-        case sendCentralPublicKey
-        case awaitPeripheralPublicKey
+        case writeCentralPublicKey
+        case readPeripheralPublicKey
         case incrementCounter           // Central increments count
         case writeCounter               // Central writes count to peripheral
         case waitForPeripheral          // Central allows time to pass for peripheral to rx and inc count
@@ -120,14 +120,14 @@ final class CentralRxBluetoothKitService {
                 switch result {
                 case .success(let characteristics):
                     for characteristic in characteristics {
-                        if characteristic.uuid == model.count.UUID {
+                        if characteristic.uuid == model.countCharacteristic.UUID {
                             self.countCharacteristic = characteristic
                             model.status = "Found count characteristic"
                             print(model.status)
-                        } else if characteristic.uuid == model.peripheral.UUID {
+                        } else if characteristic.uuid == model.peripheralCharacteristic.UUID {
                             self.peripheralPubKeyCharacteristic = characteristic
                             model.status = "Found peripheralPubKeyCharacteristic characteristic"
-                        } else if characteristic.uuid == model.central.UUID {
+                        } else if characteristic.uuid == model.centralCharacteristic.UUID {
                             self.centralPubKeyCharacteristic = characteristic
                             model.status = "Found centralPubKeyCharacteristic characteristic"
                         }
@@ -146,7 +146,7 @@ final class CentralRxBluetoothKitService {
                 model.status = "\(self.countCharacteristic.uuid)"
                 self.startReadObservable()
                 self.stopScanning()
-                self.state = .incrementCounter
+                self.state = .createRSAKeys
                 self.startReadWrites()
         }).disposed(by: disposeBag)
         
@@ -167,20 +167,31 @@ final class CentralRxBluetoothKitService {
         
             switch result {
             case .success(let characteristic):
-                guard let data = characteristic.value,
-                      let value = Int(String(decoding: data, as: UTF8.self)) else { return }
-                
-                if value - model.countValue == 1 {
-                    // Periperhal incremented by one, now it is Central's turn
+                switch characteristic.uuid {
+                case model.countCharacteristic.UUID:
+                    guard let data = characteristic.value,
+                          let value = Int(String(decoding: data, as: UTF8.self)) else { return }
+
+                    if value - model.countValue == 1 {
+                        // Periperhal incremented by one, now it is Central's turn
+                        self.state = .incrementCounter
+                        model.countValue = value
+                    }
+                case model.peripheralCharacteristic.UUID:
+                    guard let data = characteristic.value else { return }
+                    
+                    model.peripheralPubKey = String(decoding: data, as: UTF8.self)
+                    print("peripheralPubKey:", model.peripheralPubKey)
                     self.state = .incrementCounter
-                    model.countValue = value
+                default:
+                    print("ERROR: unknown UUID", characteristic)
                 }
             case .error(let err):
                 print(err)
             }
         }).disposed(by: disposeBag)
     }
-        
+    
     func centralStateMachine() {
         time += 1
         
@@ -189,13 +200,14 @@ final class CentralRxBluetoothKitService {
             break
         case .createRSAKeys:
             EncryptDecrypt.shared.createKeys()
-            state = .sendCentralPublicKey
-        case .sendCentralPublicKey:
-            writeValueTo(characteristic: countCharacteristic,
-                         data: Data(String(model.countValue).utf8))
-            state = .awaitPeripheralPublicKey
-        case .awaitPeripheralPublicKey:
-            break
+            state = .writeCentralPublicKey
+        case .writeCentralPublicKey:
+            writeValueTo(characteristic: centralPubKeyCharacteristic,
+                         data: Data(String(model.pubKey).utf8))
+            state = .readPeripheralPublicKey
+        case .readPeripheralPublicKey:
+            readValueFrom(peripheralPubKeyCharacteristic)
+            state = .awaitReadComplete
         case .incrementCounter:
             model.countValue += 1
             state = .writeCounter
