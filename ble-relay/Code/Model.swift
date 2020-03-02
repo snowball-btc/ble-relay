@@ -25,8 +25,10 @@ final class Model: ObservableObject {
     let peripheralCharacteristic = CharacteristicModel(UUID: CBUUID(string: "F0B45496-638B-4B42-86F6-9D7ED2D5ED2F"), name: "peripheralPublicKey")
 
     // Local keys
-    var pubKey = ""
-    var privKey = ""
+    var pubKey: SecKey!
+    var privKey: SecKey!
+    var pubKeyString = ""
+    var privKeyString = ""
     
     var centralPubKey = ""
     var peripheralPubKey = ""

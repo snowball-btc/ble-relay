@@ -170,8 +170,9 @@ final class CentralRxBluetoothKitService {
                 switch characteristic.uuid {
                 case model.countCharacteristic.UUID:
                     guard let data = characteristic.value,
-                          let value = Int(String(decoding: data, as: UTF8.self)) else { return }
-
+                          let text = EncryptDecrypt.shared.decrypt(stringToDecrypt: String(decoding: data, as: UTF8.self)),
+                          let value = Int(text) else { return }
+                    
                     if value - model.countValue == 1 {
                         // Periperhal incremented by one, now it is Central's turn
                         self.state = .incrementCounter
@@ -203,8 +204,10 @@ final class CentralRxBluetoothKitService {
             state = .writeCentralPublicKey
         case .writeCentralPublicKey:
             writeValueTo(characteristic: centralPubKeyCharacteristic,
-                         data: Data(String(model.pubKey).utf8))
-            state = .readPeripheralPublicKey
+                         data: Data(String(model.pubKeyString).utf8))
+            model.status = model.pubKeyString
+//            state = .readPeripheralPublicKey
+            state = .idle
         case .readPeripheralPublicKey:
             readValueFrom(peripheralPubKeyCharacteristic)
             state = .awaitReadComplete
@@ -212,8 +215,8 @@ final class CentralRxBluetoothKitService {
             model.countValue += 1
             state = .writeCounter
         case .writeCounter:
-            writeValueTo(characteristic: countCharacteristic,
-                         data: Data(String(model.countValue).utf8))
+            guard let encryptedString = EncryptDecrypt.shared.encrypt(stringToEncrypt: String(model.countValue)) else { return }
+            writeValueTo(characteristic: countCharacteristic, data: Data(String(encryptedString).utf8))
             time = 0
             state = .waitForPeripheral
         case .waitForPeripheral:

@@ -94,15 +94,15 @@ final class PeripheralRxBluetoothKitService {
             
             switch $0.characteristic.uuid {
             case model.countCharacteristic.UUID:
-                $0.value = Data(String(model.countValue).utf8)
+                guard let encryptedString = EncryptDecrypt.shared.encrypt(stringToEncrypt: String(model.countValue)) else { return }
+                $0.value = Data(String(encryptedString).utf8)
                 self.peripheralManager.respond(to: $0, withResult: CBATTError.success)
             case model.peripheralCharacteristic.UUID:
-                $0.value = Data(model.pubKey.utf8)
+                $0.value = Data(model.pubKeyString.utf8)
                 self.peripheralManager.respond(to: $0, withResult: CBATTError.success)
             default:
                 print("ERROR:", $0.characteristic.uuid)
             }
-
         })
     }
     
@@ -116,7 +116,10 @@ final class PeripheralRxBluetoothKitService {
 
             switch uuid {
             case model.countCharacteristic.UUID:
-                let incomingCount = Int(String(decoding: data, as: UTF8.self)) ?? -1
+                
+                guard let text = EncryptDecrypt.shared.decrypt(stringToDecrypt: String(decoding: data, as: UTF8.self)),
+                      let incomingCount = Int(text) else { return }
+                
                 if incomingCount - model.countValue == 1 {
                     model.countValue = incomingCount + 1
                 }
