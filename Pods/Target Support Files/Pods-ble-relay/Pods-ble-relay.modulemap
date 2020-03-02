@@ -1,4 +1,4 @@
-framework module Pods_ble_relay {
+module Pods_ble_relay {
   umbrella header "Pods-ble-relay-umbrella.h"
 
   export *
