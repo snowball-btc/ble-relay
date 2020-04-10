@@ -83,10 +83,8 @@ final class CentralRxBluetoothKitService {
         scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
     }
     
-    func startRelaying() {
-        model.status = "Searching for snowball peripherals"
-        
-        let snowballPeripheral = scanningOutput
+    fileprivate func discoverPeripherals() -> Observable<()> {
+        scanningOutput
             .take(1)
             .map { result in
                 switch result {
@@ -97,8 +95,10 @@ final class CentralRxBluetoothKitService {
                     print(err)
                 }
             }
-        
-        let snowballService = discoveredServicesOutput
+    }
+    
+    fileprivate func discoverServices() -> Observable<()> {
+        discoveredServicesOutput
             .take(1)
             .map { [weak self] result in
                 guard let self = self else { return }
@@ -112,8 +112,10 @@ final class CentralRxBluetoothKitService {
                     print(err)
                 }
             }
-            
-        let snowballCharacteristic = discoveredCharacteristicsOutput
+    }
+    
+    fileprivate func discoverCharacteristics() -> Observable<()> {
+        discoveredCharacteristicsOutput
             .take(1)
             .map { [weak self] result in
                 guard let self = self else { return }
@@ -133,13 +135,16 @@ final class CentralRxBluetoothKitService {
                         }
                         print(model.status)
                     }
-
                 case .error(let err):
                     print(err)
                 }
             }
-        
-        _ = Observable.zip(snowballPeripheral, snowballService, snowballCharacteristic) { _, _, _ in }
+    }
+    
+    func startRelaying() {
+        model.status = "Searching for snowball peripherals"
+
+        _ = Observable.zip(discoverPeripherals(), discoverServices(), discoverCharacteristics()) { _, _, _ in }
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
 
@@ -388,7 +393,5 @@ final class CentralRxBluetoothKitService {
 }
 
 enum RxBluetoothServiceError: Error {
-
     case redundantStateChange
-
 }
