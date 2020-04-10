@@ -16,7 +16,7 @@ final class PeripheralRxBluetoothKitService {
     // MARK: - Public outputs
 
     var advertisementOutput: Observable<Result<StartAdvertisingResult, Error>> {
-        return advertisingSubject.share(replay: 1, scope: .forever).asObservable()
+        advertisingSubject.share(replay: 1, scope: .forever).asObservable()
     }
     
     // MARK: Private subjects

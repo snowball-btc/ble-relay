@@ -30,25 +30,25 @@ final class CentralRxBluetoothKitService {
     // MARK: - Public outputs
 
     var scanningOutput: Observable<Result<ScannedPeripheral, Error>> {
-        return scanningSubject.share(replay: 1, scope: .forever).asObservable()
+        scanningSubject.share(replay: 1, scope: .forever).asObservable()
     }
     var discoveredServicesOutput: Observable<Result<[Service], Error>> {
-        return discoveredServicesSubject.asObservable()
+        discoveredServicesSubject.asObservable()
     }
     var discoveredCharacteristicsOutput: Observable<Result<[Characteristic], Error>> {
-        return discoveredCharacteristicsSubject.asObservable()
+        discoveredCharacteristicsSubject.asObservable()
     }
     var disconnectionReasonOutput: Observable<Result<Disconnection, Error>> {
-        return disconnectionSubject.asObservable()
+        disconnectionSubject.asObservable()
     }
     var readValueOutput: Observable<Result<Characteristic, Error>> {
-        return readValueSubject.asObservable()
+        readValueSubject.asObservable()
     }
     var writeValueOutput: Observable<Result<Characteristic, Error>> {
-        return writeValueSubject.asObservable()
+        writeValueSubject.asObservable()
     }
     var updatedValueAndNotificationOutput: Observable<Result<Characteristic, Error>> {
-        return updatedValueAndNotificationSubject.asObservable()
+        updatedValueAndNotificationSubject.asObservable()
     }
 
     // MARK: - Private subjects
