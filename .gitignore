@@ -8,3 +8,6 @@ xcuserdata
 *.xcscmblueprint
 
 *.xcuserstate
+
+Pods/SwiftLint/
+Pods/Target Support Files/SwiftLint/
